@@ -1,0 +1,70 @@
+#include "raylib.h"
+
+//------------------------------------------------------------------------------------
+// Program main entry point
+//------------------------------------------------------------------------------------
+int main(void)
+{
+    // Initialization
+    //--------------------------------------------------------------------------------------
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+    int x,y;
+    bool flagO,flagK;
+    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+
+    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    //--------------------------------------------------------------------------------------
+     x=0;
+     y=0;
+    // Main game loop
+    while (!WindowShouldClose())    // Detect window close button or ESC key
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        // TODO: Update your variables here
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+
+            ClearBackground(RAYWHITE);
+
+            DrawText("Congrats! You created your first window!", 190, 225, 20, LIGHTGRAY);
+            DrawText("O mpamphs einai gay", x, y, 20, BLACK);
+       
+  
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+        if(x+200>=screenWidth)
+        {flagO=true;}
+        else if(x==0){
+            flagO=false;
+        }
+        if(y+20>=screenHeight)
+        {flagK=true;}
+        else if(y==0){
+            flagK=false;
+        }
+        if(flagO)
+        {x=x-10;
+        }
+        else{
+            x=x+10;
+        }
+        if(flagK)
+        {y=y-10;
+        }
+        else{
+            y=y+10;
+        }           
+     }
+
+    // De-Initialization
+    //--------------------------------------------------------------------------------------
+    CloseWindow();        // Close window and OpenGL context
+    //--------------------------------------------------------------------------------------
+
+    return 0;
+}
