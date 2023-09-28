@@ -49,30 +49,20 @@ int main(void)
         //     bla bla 
         //     bla
         // }
-        if(x+50>=screenWidth) {
-            flagO=true;
-        }
-        else if(x<=0) {
-            flagO=false;
-        }
-        if(y+50>=screenHeight) {
-            flagK=true;
-        }
-        else if(y<=0) {
-            flagK=false;
-        }
-        if(flagO) {
+        
+        if(x+50>=screenWidth) {            
             x=x-step;
-        }
-        else {
+        }    
+        else if(x<=0) {
             x=x+step;
         }
-        if(flagK) {    
+        if(y+50>=screenHeight) {
             y=y-step;
         }
-        else{
+        else if(y<=0){
             y=y+step;
-        }   
+        }
+      
         // Πάρα πολλές συνθήκες. Μπορεί να γίνει με δύο συνθήκες αν έχεις διαφορετική ταχύτητα για x και y.
         // Stop the timer
         end_time = clock();  // Και εδώ είναι λάθος τα κενά. Bάλε tabs.
