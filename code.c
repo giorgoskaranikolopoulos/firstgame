@@ -50,7 +50,7 @@ int main(void)
         //     bla
         // }
         
-        if(x+50>=screenWidth ) {
+        if(x+50>=screenWidth) {
             speedX=-abs(speedX);
         }
         else if(x<=0) {
