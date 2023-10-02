@@ -50,30 +50,18 @@ int main(void)
         //     bla
         // }
         
-        if(x+50>=screenWidth) {
-            flagO=true;
+        if(x+50>=screenWidth ) {
+            speedX=-abs(speedX);
         }
         else if(x<=0) {
-            flagO=false;
+            speedX=abs(speedX); 
         }
         if(y+50>=screenHeight) {
-            flagK=true;
+            speedY=-abs(speedY);
         }
         else if(y<=0) {
-            flagK=false;
+            speedY=abs(speedY);
         }
-        if(flagO) {                   
-            x=x-step;
-        }
-        else {
-            x=x+step;
-        }    
-        if(flagK) {    
-            y=y-step;
-        }
-        else {
-            y=y+step;
-        }   
       
         // Πάρα πολλές συνθήκες. Μπορεί να γίνει με δύο συνθήκες αν έχεις διαφορετική ταχύτητα για x και y.
         // Stop the timer
