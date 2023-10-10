@@ -92,7 +92,7 @@ int main(void)
         stepY=loop_speedY;
         loop_speedY=loop_speedY-stepY;
         
-        printf("%d %f\n",stepX,elapsed_time); // Η αφήνεις κενά μετά το κόμμα ή όχι
+        printf("%d %f \n",stepX,elapsed_time); // Η αφήνεις κενά μετά το κόμμα ή όχι
         
         // second rectangle 
         loop_speed2X=loop_speed2X+elapsed_time*speed2X;
