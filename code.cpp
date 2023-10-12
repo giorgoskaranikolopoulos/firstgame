@@ -6,9 +6,17 @@
 #define screenHeight 450
 
 // Syntax for creating a class
-class rectangle {
+class rectangle { // Ολες οι κλάσεις κατα σύμβαση ξεκινάνε με κεφαλαίο γράμμα. Αντί για rectangle θα έλεγα Rectangle.
+    // Access specifier
 public:
     // Member variables (also known as data members)
+    /*Σωστά γενικά, θα έλεγα να ομαδοποιεις παραμέτρους που έχουν σχέση μεταξύ τους.
+    πχ. 
+    int x,y;
+    int width,height;
+    int speedx,speedy;
+    Color color;
+    */
     int x;
     int y; 
     Color color;
@@ -21,8 +29,8 @@ public:
 
     Color changeColor (int i) {
         // Function implementation
-        int metro;
-        Color matrix[3];
+        int metro; // ΤΟ Μετρό της Θεσσαλονικης?
+        Color matrix[3]; // καλύτερο όνομα: colors. matrix είναι πολύ γενικό.
 
         matrix[0]=GREEN;
         matrix[1]=BLUE;
@@ -33,9 +41,10 @@ public:
         return matrix[metro];
     }
 
+    // τι είναι το price? τι είναι το sizeR και το sizeP? βάλε καλύτερα ονόματα.
     bool hitWall(int price,int step,int sizeR,int sizeP) {
-
-        if((price+sizeR>=sizeP&&step>0)||(price<=0&&step<0)) {
+        // από ότι βλέπω μπορείς δεν χρειάζεσαι μόνο το step σαν παράμετρο.
+        if((price+sizeR>=sizeP&&step>0)||(price<=0&&step<0)) { // γιατί σε ενδιαφέρει το πρόσημο του step?
             return true;
         }
         else {
@@ -51,10 +60,12 @@ int main(void)
     int stepX,step2X,stepY,step2Y,metro,i1,i2;
     Color matrix[3];
     rectangle rectangle1,rectangle2;
-    clock_t start_time,end_time;  // Η αφήνεις κενά μετά το κόμμα ή όχι
+    clock_t start_time,end_time; 
     double elapsed_time,speedX,speedY,speed2X,speed2Y,loop_speedX,loop_speed2X,loop_speedY,loop_speed2Y;
     InitWindow(screenWidth,screenHeight, "raylib [core] example - basic window");
 
+
+    // CONSTUCTOR για να μην έχεις αυτό το μακρινάρι που έχεις παρακάτω.
     rectangle1.x=0;
     rectangle1.y=0;    
     rectangle2.x=0;
@@ -104,7 +115,7 @@ int main(void)
         
         if(rectangle1.hitWall(rectangle1.x,stepX,rectangle1.width,screenWidth)) {
             i1++;
-            rectangle1.speedx=-rectangle1.speedx;
+            rectangle1.speedx=-rectangle1.speedx; // Κάνε μια συνάρτηση moveRectangle.
         }
         if(rectangle1.hitWall(rectangle1.y,stepY,rectangle1.height,screenHeight)) {
             i1++;
@@ -119,14 +130,12 @@ int main(void)
             i2++;
         }
         
-        // Πάρα πολλές συνθήκες. Μπορεί να γίνει με δύο συνθήκες αν έχεις διαφορετική ταχύτητα για x και y.
         // Stop the timer
-        end_time = clock();  // Και εδώ είναι λάθος τα κενά. Bάλε tabs.
+        end_time = clock();  
       
         // Calculate the elapsed time in seconds
         elapsed_time = (double)(end_time-start_time)/(double)CLOCKS_PER_SEC;  // ή θα αφήνεις κενό ανάμεσα στα αριθμητικά συμβολα ή όχι.
 
-        // Μπορούμε να αποφύγουμε όλες τις συνθήκες. Σκέψου το.
 
         loop_speedX=loop_speedX+elapsed_time*rectangle1.speedx;
         stepX=loop_speedX;
@@ -136,7 +145,7 @@ int main(void)
         stepY=loop_speedY;
         loop_speedY=loop_speedY-stepY;
         
-        printf("%d %f \n",stepX,elapsed_time); // Η αφήνεις κενά μετά το κόμμα ή όχι
+        printf("%d %f \n",stepX,elapsed_time); 
         
         // second rectangle 
         loop_speed2X=loop_speed2X+elapsed_time*rectangle2.speedx;
