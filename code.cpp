@@ -6,36 +6,51 @@
 #define screenHeight 450
 
 // Syntax for creating a class
-class rectangle {
+class MyRectangle { // Ολες οι κλάσεις κατα σύμβαση ξεκινάνε με κεφαλαίο γράμμα. Αντί για rectangle θα έλεγα MyRectangle.
+    // Access specifier
 public:
     // Member variables (also known as data members)
-    int x;
-    int y; 
+    /*Σωστά γενικά, θα έλεγα να ομαδοποιεις παραμέτρους που έχουν σχέση μεταξύ τους.
+    πχ. 
+    int x,y;
+    int width,height;
+    int speedx,speedy;
     Color color;
-    int width;
-    int height;
-    int speedx;
-    int speedy;
+    */
+    int x,y; 
+    Color color;
+    int width,height;
+    int speedx,speedy;
+
 
     // Member functions (methods)
-
+    MyRectangle(int x,int y,Color color,int height,int width,int speedx,int speedy) {
+        this->x=x;
+        this->y=y;
+        this->color=color;
+        this->height=height; 
+        this->width=width;
+        this->speedx=speedx;
+        this->speedy=speedy;  
+    }
     Color changeColor (int i) {
         // Function implementation
-        int metro;
-        Color matrix[3];
+        int rectanglecolor; // ΤΟ Μετρό της Θεσσαλονικης?
+        Color colors[3]; // καλύτερο όνομα: colors. matrix είναι πολύ γενικό.
 
-        matrix[0]=GREEN;
-        matrix[1]=BLUE;
-        matrix[2]=RED;
+        colors[0]=GREEN;
+        colors[1]=BLUE;
+        colors[2]=RED;
 
-        metro=i%3;
+        rectanglecolor=i%3;
 
-        return matrix[metro];
+        return colors[rectanglecolor];
     }
 
-    bool hitWall(int price,int step,int sizeR,int sizeP) {
-
-        if((price+sizeR>=sizeP&&step>0)||(price<=0&&step<0)) {
+    // τι είναι το price? τι είναι το sizeR και το sizeP? βάλε καλύτερα ονόματα.
+    bool hitWallOR() {
+        // από ότι βλέπω μπορείς δεν χρειάζεσαι μόνο το step σαν παράμετρο.
+        if((this->x+this->width>=screenWidth)||(this->x<=0)) { // γιατί σε ενδιαφέρει το πρόσημο του step?
             return true;
         }
         else {
@@ -48,33 +63,25 @@ public:
 int main(void)
 {
     // Initialization
-    int stepX,step2X,stepY,step2Y,metro,i1,i2;
+    int stepX,step2X,stepY,step2Y,i1,i2;
     Color matrix[3];
-    rectangle rectangle1,rectangle2;
-    clock_t start_time,end_time;  // Η αφήνεις κενά μετά το κόμμα ή όχι
+    MyRectangle rectangle1( 0,0,RED,50,50,80,80);
+    MyRectangle rectangle2( 0,400,GREEN,50,50,80,80);
+    clock_t start_time,end_time; 
     double elapsed_time,speedX,speedY,speed2X,speed2Y,loop_speedX,loop_speed2X,loop_speedY,loop_speed2Y;
     InitWindow(screenWidth,screenHeight, "raylib [core] example - basic window");
 
-    rectangle1.x=0;
-    rectangle1.y=0;    
-    rectangle2.x=0;
-    rectangle2.y=400;
+
+    // CONSTUCTOR για να μην έχεις αυτό το μακρινάρι που έχεις παρακάτω.
+
     stepX=0;
     stepY=0;
     step2X=0;
     step2Y=0;
-    rectangle1.speedx=80;
-    rectangle1.speedy=80;
-    rectangle2.speedx=80;
-    rectangle2.speedy=80;
     loop_speedX=0;
     loop_speedY=0;
     loop_speed2X=0;
     loop_speed2Y=0;
-    rectangle1.height=50;
-    rectangle1.width=50;
-    rectangle2.height=50;
-    rectangle2.width=50;
     i1=3;
     i2=3;
      
@@ -102,31 +109,29 @@ int main(void)
         rectangle2.x=rectangle2.x+step2X;
         rectangle2.y=rectangle2.y+step2Y;
         
-        if(rectangle1.hitWall(rectangle1.x,stepX,rectangle1.width,screenWidth)) {
+        if(rectangle1.hitWallOR()&&stepX!=0) {
             i1++;
-            rectangle1.speedx=-rectangle1.speedx;
+            rectangle1.speedx=-rectangle1.speedx; // Κάνε μια συνάρτηση moveRectangle.
         }
-        if(rectangle1.hitWall(rectangle1.y,stepY,rectangle1.height,screenHeight)) {
+        if(rectangle1.hitWallOR()&&stepY!=0) {
             i1++;
             rectangle1.speedy=-rectangle1.speedy;
         }
-        if(rectangle2.hitWall(rectangle2.x,step2X,rectangle2.width,screenWidth)) {  
+        if(rectangle2.hitWallOR()&&step2X!=0) {  
             rectangle2.speedx=-rectangle2.speedx;
             i2++;
         }
-        if(rectangle2.hitWall(rectangle2.y,step2Y,rectangle2.height,screenHeight)) { 
+        if(rectangle2.hitWallOR()&&step2Y!=0) { 
             rectangle2.speedy=-rectangle1.speedy;           
             i2++;
         }
         
-        // Πάρα πολλές συνθήκες. Μπορεί να γίνει με δύο συνθήκες αν έχεις διαφορετική ταχύτητα για x και y.
         // Stop the timer
-        end_time = clock();  // Και εδώ είναι λάθος τα κενά. Bάλε tabs.
+        end_time = clock();  
       
         // Calculate the elapsed time in seconds
         elapsed_time = (double)(end_time-start_time)/(double)CLOCKS_PER_SEC;  // ή θα αφήνεις κενό ανάμεσα στα αριθμητικά συμβολα ή όχι.
 
-        // Μπορούμε να αποφύγουμε όλες τις συνθήκες. Σκέψου το.
 
         loop_speedX=loop_speedX+elapsed_time*rectangle1.speedx;
         stepX=loop_speedX;
@@ -136,7 +141,7 @@ int main(void)
         stepY=loop_speedY;
         loop_speedY=loop_speedY-stepY;
         
-        printf("%d %f \n",stepX,elapsed_time); // Η αφήνεις κενά μετά το κόμμα ή όχι
+        printf("%d %f \n",stepX,elapsed_time); 
         
         // second rectangle 
         loop_speed2X=loop_speed2X+elapsed_time*rectangle2.speedx;
