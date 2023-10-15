@@ -20,18 +20,23 @@ public:
     int x,y; 
     Color color;
     int width,height;
-    int speedx,speedy;
-
+    double speedx,speedy;
+    double loop_speedX,loop_speedY;
+    int stepX,stepY;
 
     // Member functions (methods)
-    MyRectangle(int x,int y,Color color,int height,int width,int speedx,int speedy) {
+    MyRectangle(int x,int y,Color color,int height,int width,double speedx,double speedy) {
         this->x=x;
         this->y=y;
         this->color=color;
         this->height=height; 
         this->width=width;
         this->speedx=speedx;
-        this->speedy=speedy;  
+        this->speedy=speedy;
+        this->loop_speedX=0;
+        this->loop_speedY=0;
+        this->stepX=0;
+        this->stepY=0;  
     }
     Color changeColor (int i) {
         // Function implementation
@@ -48,7 +53,7 @@ public:
     }
 
     // τι είναι το price? τι είναι το sizeR και το sizeP? βάλε καλύτερα ονόματα.
-    bool hitWallOR() {
+    bool hitWallhorizontally() {
         // από ότι βλέπω μπορείς δεν χρειάζεσαι μόνο το step σαν παράμετρο.
         if((this->x+this->width>=screenWidth)||(this->x<=0)) { // γιατί σε ενδιαφέρει το πρόσημο του step?
             return true;
@@ -58,30 +63,45 @@ public:
         }
         
     }
+
+    bool hitWallvertically() {
+
+        if((this->y+this->height>=screenHeight)||(this->y<=0)) { // γιατί σε ενδιαφέρει το πρόσημο του step?
+            return true;
+        }
+        else {
+            return false;
+        }
+        
+    }
+    void moveRectangleX(double elapsed_time) {
+        this->x=this->x+this->stepX;  
+        this->loop_speedX=this->loop_speedX+elapsed_time*this->speedx;
+        this->stepX=this->loop_speedX;
+        this->loop_speedX=this->loop_speedX-this->stepX;    
+    }
+
+    void moveRectangleY(double elapsed_time) {
+        this->y=this->y+this->stepY;
+        this->loop_speedY=this->loop_speedY+elapsed_time*this->speedy;
+        this->stepY=this->loop_speedY;
+        this->loop_speedY=this->loop_speedY-this->stepY;
+    }
 };
 
 int main(void)
 {
     // Initialization
-    int stepX,step2X,stepY,step2Y,i1,i2;
-    Color matrix[3];
+    int i1,i2;
     MyRectangle rectangle1( 0,0,RED,50,50,80,80);
     MyRectangle rectangle2( 0,400,GREEN,50,50,80,80);
     clock_t start_time,end_time; 
-    double elapsed_time,speedX,speedY,speed2X,speed2Y,loop_speedX,loop_speed2X,loop_speedY,loop_speed2Y;
+    double elapsed_time;
     InitWindow(screenWidth,screenHeight, "raylib [core] example - basic window");
 
 
     // CONSTUCTOR για να μην έχεις αυτό το μακρινάρι που έχεις παρακάτω.
 
-    stepX=0;
-    stepY=0;
-    step2X=0;
-    step2Y=0;
-    loop_speedX=0;
-    loop_speedY=0;
-    loop_speed2X=0;
-    loop_speed2Y=0;
     i1=3;
     i2=3;
      
@@ -103,25 +123,20 @@ int main(void)
             DrawRectangle(rectangle2.x,rectangle2.y,rectangle1.width,rectangle2.height,rectangle2.changeColor(i2)); // Draw a color-filled rectangl
         EndDrawing();
 
-        rectangle1.x=rectangle1.x+stepX;
-        rectangle1.y=rectangle1.y+stepY;
         
-        rectangle2.x=rectangle2.x+step2X;
-        rectangle2.y=rectangle2.y+step2Y;
-        
-        if(rectangle1.hitWallOR()&&stepX!=0) {
+        if(rectangle1.hitWallhorizontally()&&rectangle1.stepX!=0) {
             i1++;
             rectangle1.speedx=-rectangle1.speedx; // Κάνε μια συνάρτηση moveRectangle.
         }
-        if(rectangle1.hitWallOR()&&stepY!=0) {
+        if(rectangle1.hitWallvertically()&&rectangle1.stepY!=0) {
             i1++;
             rectangle1.speedy=-rectangle1.speedy;
         }
-        if(rectangle2.hitWallOR()&&step2X!=0) {  
+        if(rectangle2.hitWallhorizontally()&&rectangle2.stepX!=0) {  
             rectangle2.speedx=-rectangle2.speedx;
             i2++;
         }
-        if(rectangle2.hitWallOR()&&step2Y!=0) { 
+        if(rectangle2.hitWallvertically()&&rectangle2.stepY!=0) { 
             rectangle2.speedy=-rectangle1.speedy;           
             i2++;
         }
@@ -132,25 +147,14 @@ int main(void)
         // Calculate the elapsed time in seconds
         elapsed_time = (double)(end_time-start_time)/(double)CLOCKS_PER_SEC;  // ή θα αφήνεις κενό ανάμεσα στα αριθμητικά συμβολα ή όχι.
 
+        rectangle1.moveRectangleX(elapsed_time);
+        rectangle1.moveRectangleY(elapsed_time);
 
-        loop_speedX=loop_speedX+elapsed_time*rectangle1.speedx;
-        stepX=loop_speedX;
-        loop_speedX=loop_speedX-stepX;
-        
-        loop_speedY=loop_speedY+elapsed_time*rectangle1.speedy;
-        stepY=loop_speedY;
-        loop_speedY=loop_speedY-stepY;
-        
-        printf("%d %f \n",stepX,elapsed_time); 
-        
+        printf("%d %f \n",rectangle1.stepX,elapsed_time); 
+        printf("%d %d\n", rectangle1.x, rectangle1.y); 
         // second rectangle 
-        loop_speed2X=loop_speed2X+elapsed_time*rectangle2.speedx;
-        step2X=loop_speed2X;
-        loop_speed2X=loop_speed2X-step2X;
-        
-        loop_speed2Y=loop_speed2Y+elapsed_time*rectangle2.speedy;
-        step2Y=loop_speed2Y;
-        loop_speed2Y=loop_speed2Y-step2Y;
+        rectangle2.moveRectangleX(elapsed_time);
+        rectangle2.moveRectangleY(elapsed_time);
     }
      
     // De-Initialization
