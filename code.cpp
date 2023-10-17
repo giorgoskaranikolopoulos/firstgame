@@ -1,6 +1,8 @@
 #include "raylib.h"
-#include <time.h>
-#include <stdio.h>   
+#include <ctime>
+#include <iostream>  
+
+using namespace std;
 
 #define screenWidth 800
 #define screenHeight 450
@@ -57,9 +59,11 @@ public:
         // από ότι βλέπω μπορείς δεν χρειάζεσαι μόνο το step σαν παράμετρο.
         if((this->x+this->width>=screenWidth)||(this->x<=0)) { // γιατί σε ενδιαφέρει το πρόσημο του step?
             return true;
+            cout << "flag=true" << endl;
         }
         else {
             return false;
+            cout << "flag=false" << endl;
         }
         
     }
@@ -78,7 +82,8 @@ public:
         this->x=this->x+this->stepX;  
         this->loop_speedX=this->loop_speedX+elapsed_time*this->speedx;
         this->stepX=this->loop_speedX;
-        this->loop_speedX=this->loop_speedX-this->stepX;    
+        this->loop_speedX=this->loop_speedX-this->stepX;
+        cout << "rectangle.stepX= " << this->stepX << endl;     
     }
 
     void moveRectangleY(double elapsed_time) {
@@ -86,6 +91,8 @@ public:
         this->loop_speedY=this->loop_speedY+elapsed_time*this->speedy;
         this->stepY=this->loop_speedY;
         this->loop_speedY=this->loop_speedY-this->stepY;
+        cout << "rectangle.stepY= " << this->stepY << endl;
+        cout << "rectangle.x= " << this->x << endl; 
     }
 };
 
@@ -123,7 +130,6 @@ int main(void)
             DrawRectangle(rectangle2.x,rectangle2.y,rectangle1.width,rectangle2.height,rectangle2.changeColor(i2)); // Draw a color-filled rectangl
         EndDrawing();
 
-        
         if(rectangle1.hitWallhorizontally()&&rectangle1.stepX!=0) {
             i1++;
             rectangle1.speedx=-rectangle1.speedx; // Κάνε μια συνάρτηση moveRectangle.
@@ -145,17 +151,22 @@ int main(void)
         end_time = clock();  
       
         // Calculate the elapsed time in seconds
-        elapsed_time = (double)(end_time-start_time)/(double)CLOCKS_PER_SEC;  // ή θα αφήνεις κενό ανάμεσα στα αριθμητικά συμβολα ή όχι.
+        elapsed_time = static_cast<double>(end_time-start_time)/(double)CLOCKS_PER_SEC;  // ή θα αφήνεις κενό ανάμεσα στα αριθμητικά συμβολα ή όχι.
 
         rectangle1.moveRectangleX(elapsed_time);
         rectangle1.moveRectangleY(elapsed_time);
 
-        printf("%d %f \n",rectangle1.stepX,elapsed_time); 
-        printf("%d %d\n", rectangle1.x, rectangle1.y); 
         // second rectangle 
         rectangle2.moveRectangleX(elapsed_time);
-        rectangle2.moveRectangleY(elapsed_time);
-    }
+        rectangle2.moveRectangleY(elapsed_time);      
+    }      
+
+    rectangle1.moveRectangleX(elapsed_time);
+    rectangle1.moveRectangleY(elapsed_time);
+
+    // second rectangle 
+    rectangle2.moveRectangleX(elapsed_time);
+    rectangle2.moveRectangleY(elapsed_time);  
      
     // De-Initialization
     //--------------------------------------------------------------------------------------
